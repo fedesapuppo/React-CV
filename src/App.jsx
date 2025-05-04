@@ -13,19 +13,21 @@ function App() {
       email: '',
       phone: ''
     },
-    education: {
+    education: [{
+      id: 1,
       schoolName: '',
       titleOfStudy: '',
       startDate: '',
       endDate: ''
-    },
-    experience: {
+    }],
+    experience: [{
+      id: 1,
       companyName: '',
       position: '',
       responsibilities: '',
       startDate: '',
       endDate: ''
-    }
+    }]
   });
 
   const handleSubmit = (e) => {
@@ -44,6 +46,53 @@ function App() {
     }));
   };
 
+  const addEducation = () => {
+    setCvData(prev => ({
+      ...prev,
+      education: [
+        ...prev.education,
+        {
+          id: prev.education.length + 1,
+          schoolName: '',
+          titleOfStudy: '',
+          startDate: '',
+          endDate: ''
+        }
+      ]
+    }));
+  };
+
+  const addExperience = () => {
+    setCvData(prev => ({
+      ...prev,
+      experience: [
+        ...prev.experience,
+        {
+          id: prev.experience.length + 1,
+          companyName: '',
+          position: '',
+          responsibilities: '',
+          startDate: '',
+          endDate: ''
+        }
+      ]
+    }));
+  };
+
+  const removeEducation = (id) => {
+    setCvData(prev => ({
+      ...prev,
+      education: prev.education.filter(edu => edu.id !== id)
+    }));
+  };
+
+  const removeExperience = (id) => {
+    setCvData(prev => ({
+      ...prev,
+      experience: prev.experience.filter(exp => exp.id !== id)
+    }));
+  };
+
   return (
     <div className={styles.app}>
       {!isSubmitted ? (
@@ -55,10 +104,14 @@ function App() {
           <Education
             data={cvData.education}
             onUpdate={(data) => updateCvData('education', data)}
+            onAdd={addEducation}
+            onRemove={removeEducation}
           />
           <Experience
             data={cvData.experience}
             onUpdate={(data) => updateCvData('experience', data)}
+            onAdd={addExperience}
+            onRemove={removeExperience}
           />
           <div className={styles.submitContainer}>
             <button type="submit" className={styles.submitButton}>
@@ -68,10 +121,6 @@ function App() {
         </form>
       ) : (
         <div className={styles.preview}>
-          <button onClick={handleEdit} className={styles.editButton}>
-            Edit CV
-          </button>
-
           <div className={styles.previewSection}>
             <h2>General Information</h2>
             <p><strong>Name:</strong> {cvData.generalInfo.name}</p>
@@ -81,18 +130,34 @@ function App() {
 
           <div className={styles.previewSection}>
             <h2>Education</h2>
-            <p><strong>School:</strong> {cvData.education.schoolName}</p>
-            <p><strong>Degree:</strong> {cvData.education.titleOfStudy}</p>
-            <p><strong>Period:</strong> {cvData.education.startDate} - {cvData.education.endDate}</p>
+            {cvData.education.map((edu, index) => (
+              <div key={edu.id} className={styles.previewEntry}>
+                <h3>Education {index + 1}</h3>
+                <p><strong>School:</strong> {edu.schoolName}</p>
+                <p><strong>Degree:</strong> {edu.titleOfStudy}</p>
+                <p><strong>Period:</strong> {edu.startDate} - {edu.endDate}</p>
+              </div>
+            ))}
           </div>
 
           <div className={styles.previewSection}>
             <h2>Work Experience</h2>
-            <p><strong>Company:</strong> {cvData.experience.companyName}</p>
-            <p><strong>Position:</strong> {cvData.experience.position}</p>
-            <p><strong>Period:</strong> {cvData.experience.startDate} - {cvData.experience.endDate}</p>
-            <p><strong>Responsibilities:</strong></p>
-            <p className={styles.responsibilities}>{cvData.experience.responsibilities}</p>
+            {cvData.experience.map((exp, index) => (
+              <div key={exp.id} className={styles.previewEntry}>
+                <h3>Experience {index + 1}</h3>
+                <p><strong>Company:</strong> {exp.companyName}</p>
+                <p><strong>Position:</strong> {exp.position}</p>
+                <p><strong>Period:</strong> {exp.startDate} - {exp.endDate}</p>
+                <p><strong>Responsibilities:</strong></p>
+                <p className={styles.responsibilities}>{exp.responsibilities}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.editButtonContainer}>
+            <button onClick={handleEdit} className={styles.editButton}>
+              Edit CV
+            </button>
           </div>
         </div>
       )}

@@ -1,19 +1,18 @@
 import { useState, useEffect } from 'react';
 import styles from '../styles/cv.module.css';
 
-const Education = ({ data, onUpdate }) => {
+const Education = ({ data, onUpdate, onAdd, onRemove }) => {
   const [education, setEducation] = useState(data);
 
   useEffect(() => {
     setEducation(data);
   }, [data]);
 
-  const handleChange = (e) => {
+  const handleChange = (id, e) => {
     const { name, value } = e.target;
-    const newData = {
-      ...education,
-      [name]: value
-    };
+    const newData = education.map(edu =>
+      edu.id === id ? { ...edu, [name]: value } : edu
+    );
     setEducation(newData);
     onUpdate(newData);
   };
@@ -47,23 +46,48 @@ const Education = ({ data, onUpdate }) => {
 
   return (
     <div className={styles.education}>
-      <h2>Education</h2>
-      <form className={styles.form}>
-        {fieldMap.map(({ id, label, type, placeholder }) => (
-          <div key={id} className={styles.formGroup}>
-            <label htmlFor={id} className={styles.label}>{label}</label>
-            <input
-              type={type}
-              id={id}
-              name={id}
-              value={education[id]}
-              onChange={handleChange}
-              placeholder={placeholder}
-              className={styles.input}
-            />
+      <div className={styles.sectionHeader}>
+        <h2>Education</h2>
+        <button
+          type="button"
+          onClick={onAdd}
+          className={styles.addButton}
+        >
+          Add Education
+        </button>
+      </div>
+      {education.map((edu, index) => (
+        <div key={edu.id} className={styles.entry}>
+          <div className={styles.entryHeader}>
+            <h3>Education {index + 1}</h3>
+            {education.length > 1 && (
+              <button
+                type="button"
+                onClick={() => onRemove(edu.id)}
+                className={styles.removeButton}
+              >
+                Remove
+              </button>
+            )}
           </div>
-        ))}
-      </form>
+          <form className={styles.form}>
+            {fieldMap.map(({ id, label, type, placeholder }) => (
+              <div key={id} className={styles.formGroup}>
+                <label htmlFor={`${edu.id}-${id}`} className={styles.label}>{label}</label>
+                <input
+                  type={type}
+                  id={`${edu.id}-${id}`}
+                  name={id}
+                  value={edu[id]}
+                  onChange={(e) => handleChange(edu.id, e)}
+                  placeholder={placeholder}
+                  className={styles.input}
+                />
+              </div>
+            ))}
+          </form>
+        </div>
+      ))}
     </div>
   );
 };
