@@ -14,13 +14,13 @@ const Education = () => {
       id: 'schoolName',
       label: 'School Name',
       type: 'text',
-      placeholder: 'Enter school or university name'
+      placeholder: 'Enter school or university'
     },
     {
       id: 'titleOfStudy',
       label: 'Title of Study',
       type: 'text',
-      placeholder: 'Enter your degree or course name'
+      placeholder: 'Enter your degree or course'
     },
     {
       id: 'startDate',
