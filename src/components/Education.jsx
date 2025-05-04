@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import '../styles/cv.css';
+import styles from '../styles/cv.module.css';
 
 const Education = () => {
   const [education, setEducation] = useState({
@@ -45,12 +45,12 @@ const Education = () => {
   };
 
   return (
-    <div className="education">
+    <div className={styles.education}>
       <h2>Education</h2>
-      <form className="cv-form">
+      <form className={styles.form}>
         {fieldMap.map(({ id, label, type, placeholder }) => (
-          <div key={id} className="form-group">
-            <label htmlFor={id}>{label}</label>
+          <div key={id} className={styles.formGroup}>
+            <label htmlFor={id} className={styles.label}>{label}</label>
             <input
               type={type}
               id={id}
@@ -58,6 +58,7 @@ const Education = () => {
               value={education[id]}
               onChange={handleChange}
               placeholder={placeholder}
+              className={styles.input}
             />
           </div>
         ))}
