@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import '../styles/GeneralInfo.css';
+import '../styles/cv.css';
 
 const GeneralInfo = () => {
   const [generalInfo, setGeneralInfo] = useState({
@@ -40,7 +40,7 @@ const GeneralInfo = () => {
   return (
     <div className="general-info">
       <h2>General Information</h2>
-      <form className="general-info-form">
+      <form className="cv-form">
         {fieldMap.map(({ id, label, type, placeholder }) => (
           <div key={id} className="form-group">
             <label htmlFor={id}>{label}</label>

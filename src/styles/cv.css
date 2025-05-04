@@ -1,18 +1,19 @@
-.general-info {
-  background-color: rgb(239, 224, 224);
+/* Common styles for all CV sections */
+.cv-section {
+  background-color: white;
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 1rem 0;
 }
 
-.general-info h2 {
+.cv-section h2 {
   color: #333;
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
 }
 
-.general-info-form {
+.cv-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -37,6 +38,10 @@
   transition: border-color 0.2s ease;
 }
 
+.form-group input[type="date"] {
+  cursor: pointer;
+}
+
 .form-group input:focus {
   outline: none;
   border-color: #4a90e2;
@@ -45,4 +50,16 @@
 
 .form-group input::placeholder {
   color: #999;
+}
+
+/* Specific styles for GeneralInfo */
+.general-info {
+  composes: cv-section;
+  background-color: rgb(239, 224, 224);
+}
+
+/* Specific styles for Education */
+.education {
+  composes: cv-section;
+  background-color: rgb(73, 143, 240);
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import '../styles/Education.css';
+import '../styles/cv.css';
 
 const Education = () => {
   const [education, setEducation] = useState({
@@ -47,7 +47,7 @@ const Education = () => {
   return (
     <div className="education">
       <h2>Education</h2>
-      <form className="education-form">
+      <form className="cv-form">
         {fieldMap.map(({ id, label, type, placeholder }) => (
           <div key={id} className="form-group">
             <label htmlFor={id}>{label}</label>
