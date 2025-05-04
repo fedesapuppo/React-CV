@@ -1,12 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../styles/cv.module.css';
 
-const GeneralInfo = () => {
-  const [generalInfo, setGeneralInfo] = useState({
-    name: '',
-    email: '',
-    phone: ''
-  });
+const GeneralInfo = ({ data, onUpdate }) => {
+  const [generalInfo, setGeneralInfo] = useState(data);
+
+  useEffect(() => {
+    setGeneralInfo(data);
+  }, [data]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const newData = {
+      ...generalInfo,
+      [name]: value
+    };
+    setGeneralInfo(newData);
+    onUpdate(newData);
+  };
 
   const fieldMap = [
     {
@@ -28,14 +38,6 @@ const GeneralInfo = () => {
       placeholder: 'Enter your phone number'
     }
   ];
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setGeneralInfo(prevInfo => ({
-      ...prevInfo,
-      [name]: value
-    }));
-  };
 
   return (
     <div className={styles.generalInfo}>

@@ -1,14 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../styles/cv.module.css';
 
-const Experience = () => {
-  const [experience, setExperience] = useState({
-    companyName: '',
-    position: '',
-    responsibilities: '',
-    startDate: '',
-    endDate: ''
-  });
+const Experience = ({ data, onUpdate }) => {
+  const [experience, setExperience] = useState(data);
+
+  useEffect(() => {
+    setExperience(data);
+  }, [data]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const newData = {
+      ...experience,
+      [name]: value
+    };
+    setExperience(newData);
+    onUpdate(newData);
+  };
 
   const fieldMap = [
     {
@@ -42,14 +50,6 @@ const Experience = () => {
       placeholder: 'Select end date'
     }
   ];
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setExperience(prevExperience => ({
-      ...prevExperience,
-      [name]: value
-    }));
-  };
 
   return (
     <div className={styles.experience}>
