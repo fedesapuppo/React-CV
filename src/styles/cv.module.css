@@ -59,6 +59,24 @@
   font-family: inherit;
 }
 
+.inputError,
+.textarea.inputError {
+  border-color: #dc3545;
+  background-color: #fff8f8;
+}
+
+.inputError:focus,
+.textarea.inputError:focus {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
+}
+
+.errorMessage {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
 .textarea {
   resize: vertical;
   min-height: 100px;

@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { Formik, Form } from 'formik'
 import './App.css'
 import GeneralInfo from './components/GeneralInfo'
 import Education from './components/Education'
 import Experience from './components/Experience'
 import styles from './styles/cv.module.css'
+import { cvSchema } from './validation/cvSchema'
 
 function App() {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -30,20 +32,13 @@ function App() {
     }]
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (values) => {
+    setCvData(values);
     setIsSubmitted(true);
   };
 
   const handleEdit = () => {
     setIsSubmitted(false);
-  };
-
-  const updateCvData = (section, data) => {
-    setCvData(prev => ({
-      ...prev,
-      [section]: data
-    }));
   };
 
   const addEducation = () => {
@@ -96,29 +91,47 @@ function App() {
   return (
     <div className={styles.app}>
       {!isSubmitted ? (
-        <form onSubmit={handleSubmit}>
-          <GeneralInfo
-            data={cvData.generalInfo}
-            onUpdate={(data) => updateCvData('generalInfo', data)}
-          />
-          <Education
-            data={cvData.education}
-            onUpdate={(data) => updateCvData('education', data)}
-            onAdd={addEducation}
-            onRemove={removeEducation}
-          />
-          <Experience
-            data={cvData.experience}
-            onUpdate={(data) => updateCvData('experience', data)}
-            onAdd={addExperience}
-            onRemove={removeExperience}
-          />
-          <div className={styles.submitContainer}>
-            <button type="submit" className={styles.submitButton}>
-              Generate CV
-            </button>
-          </div>
-        </form>
+        <Formik
+          initialValues={cvData}
+          validationSchema={cvSchema}
+          onSubmit={handleSubmit}
+          enableReinitialize
+        >
+          {({ values, errors, touched, handleChange, handleBlur }) => (
+            <Form>
+              <GeneralInfo
+                data={values.generalInfo}
+                errors={errors.generalInfo}
+                touched={touched.generalInfo}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              <Education
+                data={values.education}
+                errors={errors.education}
+                touched={touched.education}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                onAdd={addEducation}
+                onRemove={removeEducation}
+              />
+              <Experience
+                data={values.experience}
+                errors={errors.experience}
+                touched={touched.experience}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                onAdd={addExperience}
+                onRemove={removeExperience}
+              />
+              <div className={styles.submitContainer}>
+                <button type="submit" className={styles.submitButton}>
+                  Generate CV
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
       ) : (
         <div className={styles.preview}>
           <div className={styles.previewSection}>

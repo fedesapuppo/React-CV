@@ -1,22 +1,6 @@
-import { useState, useEffect } from 'react';
 import styles from '../styles/cv.module.css';
 
-const Education = ({ data, onUpdate, onAdd, onRemove }) => {
-  const [education, setEducation] = useState(data);
-
-  useEffect(() => {
-    setEducation(data);
-  }, [data]);
-
-  const handleChange = (id, e) => {
-    const { name, value } = e.target;
-    const newData = education.map(edu =>
-      edu.id === id ? { ...edu, [name]: value } : edu
-    );
-    setEducation(newData);
-    onUpdate(newData);
-  };
-
+const Education = ({ data, errors, touched, onChange, onBlur, onAdd, onRemove }) => {
   const fieldMap = [
     {
       id: 'schoolName',
@@ -56,11 +40,11 @@ const Education = ({ data, onUpdate, onAdd, onRemove }) => {
           Add Education
         </button>
       </div>
-      {education.map((edu, index) => (
+      {data.map((edu, index) => (
         <div key={edu.id} className={styles.entry}>
           <div className={styles.entryHeader}>
             <h3>Education {index + 1}</h3>
-            {education.length > 1 && (
+            {data.length > 1 && (
               <button
                 type="button"
                 onClick={() => onRemove(edu.id)}
@@ -70,24 +54,31 @@ const Education = ({ data, onUpdate, onAdd, onRemove }) => {
               </button>
             )}
           </div>
-          <form className={styles.form}>
+          <div className={styles.form}>
             {fieldMap.map(({ id, label, type, placeholder }) => (
               <div key={id} className={styles.formGroup}>
                 <label htmlFor={`${edu.id}-${id}`} className={styles.label}>{label}</label>
                 <input
                   type={type}
                   id={`${edu.id}-${id}`}
-                  name={id}
+                  name={`education[${index}].${id}`}
                   value={edu[id]}
-                  onChange={(e) => handleChange(edu.id, e)}
+                  onChange={onChange}
+                  onBlur={onBlur}
                   placeholder={placeholder}
-                  className={styles.input}
+                  className={`${styles.input} ${touched?.[index]?.[id] && errors?.[index]?.[id] ? styles.inputError : ''}`}
                 />
+                {touched?.[index]?.[id] && errors?.[index]?.[id] && (
+                  <div className={styles.errorMessage}>{errors[index][id]}</div>
+                )}
               </div>
             ))}
-          </form>
+          </div>
         </div>
       ))}
+      {errors && typeof errors === 'string' && (
+        <div className={styles.errorMessage}>{errors}</div>
+      )}
     </div>
   );
 };

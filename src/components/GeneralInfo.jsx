@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from '../styles/cv.module.css';
 
-const GeneralInfo = ({ data, onUpdate }) => {
+const GeneralInfo = ({ data, errors, touched, onChange, onBlur }) => {
   const [generalInfo, setGeneralInfo] = useState(data);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const GeneralInfo = ({ data, onUpdate }) => {
       [name]: value
     };
     setGeneralInfo(newData);
-    onUpdate(newData);
+    onChange(newData);
   };
 
   const fieldMap = [
@@ -29,7 +29,7 @@ const GeneralInfo = ({ data, onUpdate }) => {
       id: 'email',
       label: 'Email',
       type: 'email',
-      placeholder: 'Enter your email'
+      placeholder: 'Enter your email address'
     },
     {
       id: 'phone',
@@ -42,22 +42,26 @@ const GeneralInfo = ({ data, onUpdate }) => {
   return (
     <div className={styles.generalInfo}>
       <h2>General Information</h2>
-      <form className={styles.form}>
+      <div className={styles.form}>
         {fieldMap.map(({ id, label, type, placeholder }) => (
           <div key={id} className={styles.formGroup}>
             <label htmlFor={id} className={styles.label}>{label}</label>
             <input
               type={type}
               id={id}
-              name={id}
-              value={generalInfo[id]}
-              onChange={handleChange}
+              name={`generalInfo.${id}`}
+              value={data[id]}
+              onChange={onChange}
+              onBlur={onBlur}
               placeholder={placeholder}
-              className={styles.input}
+              className={`${styles.input} ${touched?.[id] && errors?.[id] ? styles.inputError : ''}`}
             />
+            {touched?.[id] && errors?.[id] && (
+              <div className={styles.errorMessage}>{errors[id]}</div>
+            )}
           </div>
         ))}
-      </form>
+      </div>
     </div>
   );
 };
