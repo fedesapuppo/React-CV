@@ -2,6 +2,12 @@
 
 A simple CV builder application built with React. Create and edit your professional CV with a clean, user-friendly interface.
 
+# Preview
+
+Netfily: https://topreactcv.netlify.app
+Vercel: https://react-cv-pied.vercel.app
+Cloudflare: https://react-cv-25b.pages.dev/
+
 ## Features
 
 - **General Information Section**
